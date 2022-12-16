@@ -6,7 +6,7 @@ import java.util.ArrayList;
 
 
 public class ServerThread implements Runnable {
-	
+	Database db= new Database();
 	public ServerThread(Socket connection, Database base) {
 		try {
 			this.connection = connection;
@@ -42,11 +42,22 @@ public class ServerThread implements Runnable {
 			} catch(Exception e) { };
 		} 
 	}
-	
-	public void recieve(String[] info) throws IOException, ClassNotFoundException {
-		Person p = new Person(info[0], info[1], base.getNum(), info[2], info[3], info[4]);
-		base.addPerson(p); 
+
+	public void recieve(String[] args){
+		int res=db.login(args);
+		Person p=null;
+		if(res==1){
+			p=db.getPerson(args);
+		}
+		try{
+			output.writeObject(p);
+		}catch(IOException ioException) { };
 	}
+	
+	// public void recieve(String[] info) throws IOException, ClassNotFoundException {
+	// 	Person p = new Person(info[0], info[1], base.getNum(), info[2], info[3], info[4]);
+	// 	base.addPerson(p); 
+	// }
 	
 	public void recieve(int n) throws IOException {
 		if(n > 0) {

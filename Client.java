@@ -98,7 +98,7 @@ public class Client extends JFrame {
 
 		bottom.add(new JButton(new AbstractAction("Login") {
 			public void actionPerformed(ActionEvent e) {
-				sendUserPass(username.getText() + password.getText().toString());
+				sendUserPass(new String[]{username.getText() , password.getText()});
 				System.out.println(username.getText() + password.getText().toString());
 	
 			}
@@ -346,6 +346,14 @@ public class Client extends JFrame {
 			
 		}
 	}
+
+	private int getLoginStatus(){
+		int res;
+		try{
+			res=input.readInt();
+		}catch(IOException ioException) { }
+		return res;
+	}
 	
 	private void sendInt(int n) {
 		try {
@@ -354,7 +362,7 @@ public class Client extends JFrame {
 		} catch(IOException ioException) { }
 	}
 	
-	private void sendUserPass(String userpass) {
+	private void sendUserPass(String[] userpass) {
 		try {
 			output.writeObject(userpass);
 			output.flush();
