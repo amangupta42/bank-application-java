@@ -66,13 +66,13 @@ public class Client extends JFrame {
 
 		// background picture
 		JLabel background = new JLabel();
-		//background.setIcon(new ImageIcon(getClass().getResource("anime.png")));
+		background.setIcon(new ImageIcon(getClass().getResource("java2.jpg")));
 		background.setLayout(new BorderLayout());
 
 		// transparant panel
 		JPanel top = new JPanel();
 		top.setLayout(new FlowLayout());
-		top.setOpaque(false);
+		top.setOpaque(true);
 
 		final JLabel user = new JLabel("Username:");
 		top.add(user);
@@ -98,8 +98,8 @@ public class Client extends JFrame {
 
 		bottom.add(new JButton(new AbstractAction("Login") {
 			public void actionPerformed(ActionEvent e) {
-				sendUserPass(username.getText() + password.getPassword().toString());
-				System.out.println(username.getText() + password.getPassword().toString());
+				sendUserPass(username.getText() + password.getText().toString());
+				System.out.println(username.getText() + password.getText().toString());
 	
 			}
 		}));
@@ -126,7 +126,7 @@ public class Client extends JFrame {
 		panel.setLayout(new BorderLayout());
 
 		JLabel background = new JLabel();
-		background.setIcon(new ImageIcon(getClass().getResource("anime.png")));
+		background.setIcon(new ImageIcon(getClass().getResource("java2.jpg")));
 		background.setLayout(new BorderLayout());
 
 		final JPanel content = new JPanel();
@@ -206,6 +206,7 @@ public class Client extends JFrame {
 				
 			}
 		}));
+		
 		background.add(tabs, BorderLayout.NORTH);
 
 		panel.add(background, BorderLayout.CENTER);
@@ -219,7 +220,7 @@ public class Client extends JFrame {
 		panel.setLayout(new BorderLayout());
 
 		JLabel background = new JLabel();
-		background.setIcon(new ImageIcon(getClass().getResource("anime.png")));
+		background.setIcon(new ImageIcon(getClass().getResource("java2.jpg")));
 		background.setVisible(false);
 
 		// Information form components
@@ -267,7 +268,10 @@ public class Client extends JFrame {
 		JButton create = new JButton("Create");
 		create.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent ae) {
-				if (pwd1.getPassword().toString().equals(pwd2.getPassword().toString())) {
+
+				System.out.println(pwd1.getText());
+				System.out.println(pwd2.getText());
+				if (pwd1.getText().toString().equals(pwd2.getText().toString())) {
 				
 					String[] temp = new String[]{fn.getText(), ln.getText(), an.getSelectedItem().toString(), un.getText(), pwd1.getText()};
 					
