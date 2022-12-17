@@ -58,7 +58,15 @@ public class Database {
 	// 7)
 
 	public void registerAccount(Person p) {
-		String strSelect = "select title, price, qty from books";
+
+		String queryString = "insert into Person values ('"+p.getFirst()+"','"+p.getLast()+"','"+p.getAccNum()+"','"+p.getAccount().getName()+"','"+p.getUser()+"','"+p.getPass()+"')";
+		System.out.println("The SQL statement is: " + queryString + "\n"); // Echo For debugging
+		try
+			(Statement statement = conn.createStatement();){
+				statement.executeUpdate(queryString);
+		}catch (SQLException ex){
+			ex.printStackTrace();
+		}
 	}
 
 	public void addPerson(String first, String last, String accname, String user, String pass) {

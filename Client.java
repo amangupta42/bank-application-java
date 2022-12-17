@@ -268,14 +268,14 @@ public class Client extends JFrame {
 		JButton create = new JButton("Create");
 		create.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent ae) {
-
+				RandomNums rNums= new RandomNums();
 				System.out.println(pwd1.getText());
 				System.out.println(pwd2.getText());
 				if (pwd1.getText().toString().equals(pwd2.getText().toString())) {
 				
-					String[] temp = new String[]{fn.getText(), ln.getText(), an.getSelectedItem().toString(), un.getText(), pwd1.getText()};
-					
-					sendInfo(temp);
+					Person p = new Person(fn.getText(),ln.getText(),rNums.getNew(),an.getSelectedItem().toString(),un.getText(),pwd1.getText());
+
+					sendInfo(p);
 					
 					launch();
 
@@ -338,9 +338,9 @@ public class Client extends JFrame {
 		} while(flag);
 	}
 	
-	private void sendInfo(String[] info) {
+	private void sendInfo(Person p) {
 		try {
-			output.writeObject(info);
+			output.writeObject(p);
 			output.flush();
 		} catch(IOException ioException) {
 			

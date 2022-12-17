@@ -31,8 +31,8 @@ public class ServerThread implements Runnable {
 				else if(o instanceof Integer) {
 					recieve((Integer) o);
 				}
-				else if(o instanceof String) {
-//					recieve((String) o);
+				else if(o instanceof Person) {
+					recieve((Person) o);
 				}	
 				else if(o instanceof Boolean) {
 					input.close();
@@ -68,6 +68,10 @@ public class ServerThread implements Runnable {
 		}
 		else { }
 		
+	}
+
+	public void recieve(Person p) throws IOException{
+		db.registerAccount(p);
 	}
 	
 //	public void recieve(String s) throws IOException, ClassNotFoundException {
