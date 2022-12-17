@@ -2,6 +2,7 @@ import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.net.Socket;
+import java.sql.SQLException;
 import java.util.ArrayList;
 
 
@@ -31,7 +32,7 @@ public class ServerThread implements Runnable {
 					recieve((Integer) o);
 				}
 				else if(o instanceof String) {
-					recieve((String) o);
+//					recieve((String) o);
 				}	
 				else if(o instanceof Boolean) {
 					input.close();
@@ -43,14 +44,11 @@ public class ServerThread implements Runnable {
 		} 
 	}
 
-	public void recieve(String[] args){
-		int res=db.login(args);
-		Person p=null;
-		if(res==1){
-			p=db.getPerson(args);
-		}
+	public void recieve(String[] args) throws SQLException{
+		Person res=db.login(args);
+		
 		try{
-			output.writeObject(p);
+			output.writeObject(res);
 		}catch(IOException ioException) { };
 	}
 	
@@ -72,12 +70,12 @@ public class ServerThread implements Runnable {
 		
 	}
 	
-	public void recieve(String s) throws IOException, ClassNotFoundException {
-		if(base.hasPerson(s)) {
-			sendPerson(base.getPerson(s));
-			person = base.getPerson(s);
-		}
-	}
+//	public void recieve(String s) throws IOException, ClassNotFoundException {
+//		if(base.hasPerson(s)) {
+//			sendPerson(base.getPerson(s));
+//			person = base.getPerson(s);
+//		}
+//	}
 	
 	private void sendPerson(Person p) {
 		try {

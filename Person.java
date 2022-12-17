@@ -14,6 +14,15 @@ public class Person implements java.io.Serializable {
 	}
 	
 	
+	public Person() {
+		this.first="";
+		this.last="";
+		this.accnum=0;
+		a=new Account("");
+		hash="";
+	}
+
+
 	public String getFirst() {
 		return first;
 	}

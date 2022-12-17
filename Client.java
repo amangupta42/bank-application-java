@@ -348,7 +348,7 @@ public class Client extends JFrame {
 	}
 
 	private int getLoginStatus(){
-		int res;
+		int res=0;
 		try{
 			res=input.readInt();
 		}catch(IOException ioException) { }
