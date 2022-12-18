@@ -40,11 +40,11 @@ In this project, we have created a fully functional banking system with a databa
 5. Once the user is validated, the account screen appears, where you are able to carry out transactions.
 6. There are 3 possible transactions, Deposit, Withdraw and Transfer.
 7. The witdraw and deposit functionality updates your balance after you initiate a transaction.
-8. Transfer allows the user to transfer an amount to a different user in the same bank. The required details are the amount and the account number of the recipient.
+8. Transfer allows the user to transfer an amount to a different user in the same bank. The required details are the amount and the account number of the recipient. The account number for a recipient can be found in the last tab of the server window, which displays all account numbers in the database.  
 9. On clicking transfer, the amount is withdrawn from the users account and deposited into the recipient's account.
 10. The logout button will log the user out and redirect them to the login screen.
-11. The server consists of 4 tabs that display different data.
-a. The refresh tab refreshed the contents and pulls the latest data from the database.
-b. The second tab displays the total amount of money in the bank.
-c. The third tab displays the number of accounts/users in the database.
-d. The last tab lists all the accounts and displays more details when you click on the find button.
+11. The server consists of 4 tabs that display different data.  
+a. The refresh tab refreshed the contents and pulls the latest data from the database.  
+b. The second tab displays the total amount of money in the bank.  
+c. The third tab displays the number of accounts/users in the database.  
+d. The last tab lists all the accounts and displays more details when you click on the find button.  
