@@ -191,6 +191,31 @@ public class Client extends JFrame {
 				content.updateUI();
 			}
 		}));
+		tabs.add(new JButton(new AbstractAction("Transfer") {
+			public void actionPerformed(ActionEvent ae) {
+				content.removeAll();
+
+				content.add(new JLabel("Amount:"));
+				final JTextField money = new JTextField(10);
+				content.add(money);
+				content.add(new JLabel("Recipient Account Number:"));
+				final JTextField acc = new JTextField(10);
+				content.add(acc);
+				content.add(new JButton(new AbstractAction("Transfer") {
+					public void actionPerformed(ActionEvent ae) {
+						try {
+							int amount = Integer.parseInt(money.getText());
+							int accNum = Integer.parseInt(acc.getText());
+							
+							output.writeObject(new Integer[]{amount,accNum});
+							person.getAccount().withdraw(amount);
+						} catch (IOException ioException) { };
+					}
+				}));
+
+				content.updateUI();
+			}
+		}));
 		tabs.add(new JButton(new AbstractAction("Logout") {
 			public void actionPerformed(ActionEvent ae) {
 				content.removeAll();

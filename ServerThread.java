@@ -33,6 +33,9 @@ public class ServerThread implements Runnable {
 				}
 				else if(o instanceof Person) {
 					recieve((Person) o);
+				}
+				else if(o instanceof Integer[]){
+					recieve((Integer[]) o);
 				}	
 				else if(o instanceof Boolean) {
 					input.close();
@@ -40,7 +43,9 @@ public class ServerThread implements Runnable {
 					connection.close();
 					flag = false;
 				}
-			} catch(Exception e) { };
+			} catch(Exception e) {
+				System.out.println(e.getStackTrace());
+			 };
 		} 
 	}
 
@@ -72,6 +77,10 @@ public class ServerThread implements Runnable {
 
 	public void recieve(Person p) throws IOException{
 		db.registerAccount(p);
+	}
+
+	public void recieve(Integer[] arr){
+		db.transfer(arr[0],arr[1]);
 	}
 	
 //	public void recieve(String s) throws IOException, ClassNotFoundException {

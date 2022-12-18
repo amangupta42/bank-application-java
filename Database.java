@@ -193,7 +193,7 @@ public class Database implements java.io.Serializable{
 		try (
 
 			Statement statement = conn.createStatement();) {
-			String strSelect = "update Account2 set balance = "+balance+" where accountNum = '" + accNum + "' and accType = '"+accName+"'";
+			String strSelect = "update Account2 set balance = "+balance+" where accountNum = " + accNum + " and accType = '"+accName+"'";
 			System.out.println("The SQL statement is: " + strSelect + "\n"); // Echo For debugging
 			
 			statement.executeUpdate(strSelect);
@@ -249,6 +249,23 @@ public class Database implements java.io.Serializable{
 			ex.printStackTrace();
 		}
 		return 0.0;
+	}
+
+	public void transfer(double cash, int accNum){
+		try (
+
+			Statement statement = conn.createStatement();) {
+			
+			double balance = getBalance(accNum);
+			balance +=cash;
+			String strSelect = "update Account2 set balance = "+balance+" where accountNum = " + accNum;
+			System.out.println("The SQL statement is: " + strSelect + "\n"); // Echo For debugging
+			
+			statement.executeUpdate(strSelect);
+			
+		} catch (SQLException ex) {
+			ex.printStackTrace();
+		}
 	}
 
 }
