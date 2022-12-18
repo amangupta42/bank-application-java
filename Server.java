@@ -61,7 +61,7 @@ public class Server extends JFrame {
 		JPanel tab1 = new JPanel();
 		tab1.setLayout(new FlowLayout());
 		tab1.add(new JLabel("Total: "));
-		final JLabel total = new JLabel(base.getTotal() + "");
+		final JLabel total = new JLabel(base.getGrandTotal() + "");
 		tab1.add(total);
 		
 		
@@ -69,13 +69,13 @@ public class Server extends JFrame {
 		tab2.setLayout(new FlowLayout());
 		tab2.add(new JLabel("Number of Accounts"));
 		final JLabel allAcc = new JLabel();
-		allAcc.setText(base.getList().size() + "");
+		allAcc.setText(base.getTotal() + "");
 		tab2.add(allAcc);
 		
 		
 		JPanel tab3 = new JPanel();
 		tab3.setLayout(new FlowLayout());
-		final JList list = new JList(base.getList().toArray());
+		final JList list = new JList(base.getAccountList().toArray());
 		list.setSelectionMode(ListSelectionModel.SINGLE_INTERVAL_SELECTION);
 		list.setLayoutOrientation(JList.VERTICAL);
 		list.setVisibleRowCount(-1);
@@ -85,7 +85,7 @@ public class Server extends JFrame {
 		JButton find = new JButton("Find!");
 		find.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent ae) {
-				Person temp = base.find((String) list.getSelectedValue());
+				Person temp = base.find((Integer)list.getSelectedValue());
 				JOptionPane.showMessageDialog(null, temp.getInfo());
 			}
 		});
@@ -112,7 +112,7 @@ public class Server extends JFrame {
 				JButton find = new JButton("Info!");
 				find.addActionListener(new ActionListener() {
 					public void actionPerformed(ActionEvent ae) {
-						Person temp = base.find((String) list.getSelectedValue());
+						Person temp = base.find((Integer) list.getSelectedValue());
 						JOptionPane.showMessageDialog(null, temp.getInfo());
 					}
 				});
@@ -140,7 +140,7 @@ public class Server extends JFrame {
 	public void startRunning() {		
 		
 		pool = Executors.newCachedThreadPool();
-		
+		showMessage("Waiting for connections... \n");
 		try {
 			server = new ServerSocket(1337, 100);
 			while(true) {
@@ -155,7 +155,7 @@ public class Server extends JFrame {
 	
 	//Server waits for connection
 	private void waitForConnection() throws IOException {	
-		showMessage("Waiting for connections... \n");
+		
 		connection = server.accept();
 		pool.execute(new ServerThread(connection, base));
 		showMessage("Now connected to " + connection.getInetAddress().getHostName() + "\n");

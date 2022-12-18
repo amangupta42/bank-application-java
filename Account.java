@@ -1,18 +1,26 @@
 	
 public class Account implements java.io.Serializable {
 	
-	public Account(String name) {
+
+	
+	public Account(String name, int accNum) {
 		this.name = name;
+		this.accNum = accNum;
+		this.balance = 0;
 	}
 	
 	public void deposit(double cash) {
 		balance += cash;
+		Database db = new Database();
+		db.updateBalance(balance,accNum,this.name);
 	}
 	
 	public double withdraw(double cash) {
 
 		if(balance >= cash) {
 			balance -= cash;
+			Database db = new Database();
+			db.updateBalance(balance,accNum,this.name);
 			return cash;
 		}
 		else {
@@ -27,7 +35,8 @@ public class Account implements java.io.Serializable {
 	public String getName() {
 		return name;
 	}
-	
+
+	int accNum;
 	double balance;
 	String name;
 }

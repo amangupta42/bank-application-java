@@ -9,18 +9,12 @@ public class Person implements java.io.Serializable {
 		this.accnum = accnum;
 		this.user = user;
 		this.pass = pass;
-		a = new Account(accname);
+		a = new Account(accname,accnum);
 		hash = first + last;
 	}
 	
 	
-	public Person() {
-		this.first="";
-		this.last="";
-		this.accnum=0;
-		a=new Account("");
-		hash="";
-	}
+	
 
 
 	public String getFirst() {

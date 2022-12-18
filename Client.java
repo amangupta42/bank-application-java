@@ -54,11 +54,11 @@ public class Client extends JFrame {
 		panel = new JPanel();
 		add(panel);
 
-		launch();
+		launch("");
 	}
 
 	// init frame with components
-	public void launch() {
+	public void launch(String message) {
 
 		panel.removeAll();
 
@@ -90,13 +90,12 @@ public class Client extends JFrame {
 
 		background.add(top, BorderLayout.NORTH);
 
-		JPanel bottom = new JPanel();
-		bottom.setLayout(new FlowLayout());
-		bottom.setOpaque(false);
+		JPanel middle = new JPanel();
+		middle.setLayout(new FlowLayout());
+		middle.setOpaque(false);
 
-		bottom.add(new JLabel());
 
-		bottom.add(new JButton(new AbstractAction("Login") {
+		middle.add(new JButton(new AbstractAction("Login") {
 			public void actionPerformed(ActionEvent e) {
 				sendUserPass(new String[]{username.getText() , password.getText()});
 				System.out.println(username.getText() + password.getText().toString());
@@ -104,14 +103,15 @@ public class Client extends JFrame {
 			}
 		}));
 
-		bottom.add(new JButton(new AbstractAction("Register") {
+		middle.add(new JButton(new AbstractAction("Register") {
 			public void actionPerformed(ActionEvent e) {
 				registerScreen();
 			}
 		}));
+		JLabel messagLabel = new JLabel(message);
+		middle.add(messagLabel);
 
-
-		background.add(bottom, BorderLayout.CENTER);
+		background.add(middle, BorderLayout.CENTER);
 
 		panel.add(background, BorderLayout.NORTH);
 
@@ -198,7 +198,7 @@ public class Client extends JFrame {
 				content.add(new JButton(new AbstractAction("Logout") {
 					public void actionPerformed(ActionEvent ae) {
 						person = null;
-						launch();
+						launch("Logged out successfully");
 					}
 				}));
 
@@ -241,7 +241,7 @@ public class Client extends JFrame {
 
 		background.add(new JLabel("Account Name:"));
 		final JComboBox<String> an = new JComboBox<String>();
-		an.addItem("Checkings");
+		an.addItem("Checking");
 		an.addItem("Savings");
 		background.add(an);
 
@@ -260,7 +260,7 @@ public class Client extends JFrame {
 		final JButton status = new JButton("Back");
 		status.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent ae) {
-				launch();
+				launch("");
 			}
 		});
 		background.add(status);
@@ -268,7 +268,7 @@ public class Client extends JFrame {
 		JButton create = new JButton("Create");
 		create.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent ae) {
-				RandomNums rNums= new RandomNums();
+				
 				System.out.println(pwd1.getText());
 				System.out.println(pwd2.getText());
 				if (pwd1.getText().toString().equals(pwd2.getText().toString())) {
@@ -277,7 +277,7 @@ public class Client extends JFrame {
 
 					sendInfo(p);
 					
-					launch();
+					launch("Account created: Login using credentials");
 
 				}
 			}
@@ -294,7 +294,6 @@ public class Client extends JFrame {
 	public void startRunning() {
 		
 		
-		//serverIP = "76.117.48.247";
 		serverIP = "127.0.0.1";
 		
 		flag = true;
@@ -330,9 +329,12 @@ public class Client extends JFrame {
 		do {
 			try {
 				o = input.readObject();
-				if(o instanceof Person) {
+				if(o instanceof Person && o != null) {
 					person = (Person) o;
 					loginScreen();
+				}
+				else{
+					launch("Invalid credentials");
 				}
 			} catch (ClassNotFoundException classNotFoundException) { };
 		} while(flag);
@@ -394,7 +396,7 @@ public class Client extends JFrame {
 	private ObjectOutputStream output;
 	private ObjectInputStream input;
 	private String serverIP;
-	
+	private RandomNums rNums= new RandomNums();;
 	
 
 }
