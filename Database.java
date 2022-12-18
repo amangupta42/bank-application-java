@@ -233,4 +233,22 @@ public class Database implements java.io.Serializable{
 		
 	}
 
+	public double getBalance(int accNum) {
+		ResultSet res=null;
+		try (
+
+			Statement statement = conn.createStatement();) {
+			String strSelect = "select (Balance) from Account2 where accountNum = "+accNum;
+			System.out.println("The SQL statement is: " + strSelect + "\n"); // Echo For debugging
+			
+			res = statement.executeQuery(strSelect);
+			res.next();
+			return res.getDouble("Balance");
+			
+		} catch (SQLException ex) {
+			ex.printStackTrace();
+		}
+		return 0.0;
+	}
+
 }

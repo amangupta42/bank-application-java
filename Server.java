@@ -97,12 +97,12 @@ public class Server extends JFrame {
 		tab0.add(new JButton(new AbstractAction("Refresh") {
 			public void actionPerformed(ActionEvent ae) {
 				
-				total.setText(base.getTotal() + "");
-				allAcc.setText(base.getSize() + "");
+				total.setText(base.getGrandTotal() + "");
+				allAcc.setText(base.getTotal() + "");
 				
 				final JPanel tab3 = new JPanel();
 				tab3.setLayout(new FlowLayout());
-				final JList list = new JList(base.getList().toArray());
+				final JList list = new JList(base.getAccountList().toArray());
 				list.setSelectionMode(ListSelectionModel.SINGLE_INTERVAL_SELECTION);
 				list.setLayoutOrientation(JList.VERTICAL);
 				list.setVisibleRowCount(-1);

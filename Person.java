@@ -9,7 +9,7 @@ public class Person implements java.io.Serializable {
 		this.accnum = accnum;
 		this.user = user;
 		this.pass = pass;
-		a = new Account(accname,accnum);
+		a = new Account(accname, accnum);
 		hash = first + last;
 	}
 	

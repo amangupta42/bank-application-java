@@ -6,7 +6,8 @@ public class Account implements java.io.Serializable {
 	public Account(String name, int accNum) {
 		this.name = name;
 		this.accNum = accNum;
-		this.balance = 0;
+		Database db = new Database();
+		this.balance = db.getBalance(accNum);
 	}
 	
 	public void deposit(double cash) {
