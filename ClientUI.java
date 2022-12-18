@@ -11,7 +11,6 @@ import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.net.InetAddress;
-import java.net.ServerSocket;
 import java.net.Socket;
 
 import javax.swing.AbstractAction;
@@ -20,24 +19,17 @@ import javax.swing.JButton;
 import javax.swing.JComboBox;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
+import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JPasswordField;
 import javax.swing.JTextField;
 import javax.swing.SwingConstants;
-import javax.swing.SwingUtilities;
 
-public class Client extends JFrame {
+public class ClientUI extends JFrame {
 
-	// public static void main(String[] args) {
-	// 	SwingUtilities.invokeLater(new Runnable() {
-	// 		public void run() {
-	// 			new Client();
-	// 		}
-	// 	});
-	// }
 
 	// set up frame details
-	public Client() {
+	public ClientUI() {
 		super("Client");
 
 		setSize(500, 500);
@@ -48,17 +40,18 @@ public class Client extends JFrame {
 		addWindowListener(new WindowAdapter() {
             public void windowClosing(WindowEvent we) {
                 flag = false;
+				closeDown();
             }
         });
 
 		panel = new JPanel();
 		add(panel);
 
-		launch("");
+		launch();
 	}
 
 	// init frame with components
-	public void launch(String message) {
+	public void launch() {
 
 		panel.removeAll();
 
@@ -108,8 +101,6 @@ public class Client extends JFrame {
 				registerScreen();
 			}
 		}));
-		JLabel messagLabel = new JLabel(message);
-		middle.add(messagLabel);
 
 		background.add(middle, BorderLayout.CENTER);
 
@@ -137,7 +128,7 @@ public class Client extends JFrame {
 		background.add(content, BorderLayout.CENTER);
 
 		JPanel tabs = new JPanel();
-		GridLayout grid = new GridLayout(1, 4);
+		GridLayout grid = new GridLayout(1, 5);
 		grid.setHgap(15);
 		tabs.setLayout(grid);
 		tabs.setOpaque(false);
@@ -160,14 +151,24 @@ public class Client extends JFrame {
 				content.add(money);
 				content.add(new JButton(new AbstractAction("Deposit") {
 					public void actionPerformed(ActionEvent ae) {
+						int input = JOptionPane.showConfirmDialog(panel, "Do you want to proceed?", "Select an Option...",
+				JOptionPane.YES_NO_OPTION, JOptionPane.ERROR_MESSAGE);
+				if(input==0){
 						try {
 							int amount = Integer.parseInt(money.getText());
 							output.writeObject(amount);
 							person.getAccount().deposit(amount);
+							JOptionPane.showMessageDialog(panel, "Deposit success");
+							money.setText("");
 						} catch (IOException ioException) { };
 					}
-				}));
-
+				
+				else{
+					money.setText("");
+				}
+				}
+			}));
+				
 				content.updateUI();
 			}
 		}));
@@ -180,12 +181,28 @@ public class Client extends JFrame {
 				content.add(money);
 				content.add(new JButton(new AbstractAction("Withdraw") {
 					public void actionPerformed(ActionEvent ae) {
+						int input = JOptionPane.showConfirmDialog(panel, "Do you want to proceed?", "Select an Option...",
+				JOptionPane.YES_NO_OPTION, JOptionPane.ERROR_MESSAGE);
+				if(input==0){
 						try {
 							int amount = Integer.parseInt(money.getText());
+							double res = person.getAccount().canWithdraw(amount);
+							
+							
+							if(res==0){
+								JOptionPane.showMessageDialog(panel, "Withdraw amount exceeds current balance");
+							}
+							
+							else{
 							output.writeObject(amount*-1);
-							person.getAccount().withdraw(amount);
+							JOptionPane.showMessageDialog(panel, "Withdraw success");
+							}
+							money.setText("");
 						} catch (IOException ioException) { };
 					}
+					else{
+						money.setText("");
+					}}
 				}));
 
 				content.updateUI();
@@ -198,24 +215,41 @@ public class Client extends JFrame {
 				content.add(new JLabel("Amount:"));
 				final JTextField money = new JTextField(10);
 				content.add(money);
-				content.add(new JLabel("Recipient Account Number:"));
+				content.add(new JLabel("Recipient Acc/N:"));
 				final JTextField acc = new JTextField(10);
 				content.add(acc);
 				content.add(new JButton(new AbstractAction("Transfer") {
 					public void actionPerformed(ActionEvent ae) {
+						int input = JOptionPane.showConfirmDialog(panel, "Do you want to proceed?", "Select an Option...",
+				JOptionPane.YES_NO_OPTION, JOptionPane.ERROR_MESSAGE);
+				if(input==0){
 						try {
+							
 							int amount = Integer.parseInt(money.getText());
 							int accNum = Integer.parseInt(acc.getText());
-							
-							output.writeObject(new Integer[]{amount,accNum});
-							person.getAccount().withdraw(amount);
+							double res = person.getAccount().canWithdraw(amount);
+							if(res==0){
+								JOptionPane.showMessageDialog(panel, "Withdraw amount exceeds current balance");
+							}
+							else{
+								output.writeObject(new Integer[]{amount,accNum});
+								person.getAccount().withdraw(amount);
+								JOptionPane.showMessageDialog(panel, "Transfer success");
+							}
+							money.setText("");
+							acc.setText("");
 						} catch (IOException ioException) { };
 					}
+					else{
+						money.setText("");
+						acc.setText("");
+					}}
 				}));
 
 				content.updateUI();
 			}
 		}));
+
 		tabs.add(new JButton(new AbstractAction("Logout") {
 			public void actionPerformed(ActionEvent ae) {
 				content.removeAll();
@@ -223,7 +257,8 @@ public class Client extends JFrame {
 				content.add(new JButton(new AbstractAction("Logout") {
 					public void actionPerformed(ActionEvent ae) {
 						person = null;
-						launch("Logged out successfully");
+						JOptionPane.showMessageDialog(panel, "Logout success");
+						launch();
 					}
 				}));
 
@@ -285,7 +320,7 @@ public class Client extends JFrame {
 		final JButton status = new JButton("Back");
 		status.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent ae) {
-				launch("");
+				launch();
 			}
 		});
 		background.add(status);
@@ -294,17 +329,27 @@ public class Client extends JFrame {
 		create.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent ae) {
 				
-				System.out.println(pwd1.getText());
-				System.out.println(pwd2.getText());
-				if (pwd1.getText().toString().equals(pwd2.getText().toString())) {
-				
-					Person p = new Person(fn.getText(),ln.getText(),rNums.getNew(),an.getSelectedItem().toString(),un.getText(),pwd1.getText());
-
-					sendInfo(p);
-					
-					launch("Account created: Login using credentials");
-
+				if(fn.getText().isEmpty() || ln.getText().isEmpty() || un.getText().isEmpty() || pwd1.getText().isEmpty() || pwd2.getText().isEmpty()){
+					JOptionPane.showMessageDialog(panel, "Check all fields have values and retry");
 				}
+				else{
+				 if (pwd1.getText().toString().equals(pwd2.getText().toString())) {
+				
+						Person p = new Person(fn.getText(),ln.getText(),rNums.getNew(),an.getSelectedItem().toString(),un.getText(),pwd1.getText());
+	
+						sendInfo(p);
+						JOptionPane.showMessageDialog(panel, "Account created: Login using credentials");
+						launch();
+				}
+				else{
+					JOptionPane.showMessageDialog(panel, "Passwords do not match, please re-enter");
+					pwd1.setText("");
+					pwd2.setText("");
+				}
+			}
+				
+
+				
 			}
 		});
 		background.add(create);
@@ -359,12 +404,15 @@ public class Client extends JFrame {
 					loginScreen();
 				}
 				else{
-					launch("Invalid credentials");
+					JOptionPane.showMessageDialog(panel, "Invalid credentials");
+					launch();
 				}
 			} catch (ClassNotFoundException classNotFoundException) { };
 		} while(flag);
 	}
 	
+
+	//Send a person object to the server
 	private void sendInfo(Person p) {
 		try {
 			output.writeObject(p);
@@ -373,22 +421,8 @@ public class Client extends JFrame {
 			
 		}
 	}
-
-	private int getLoginStatus(){
-		int res=0;
-		try{
-			res=input.readInt();
-		}catch(IOException ioException) { }
-		return res;
-	}
 	
-	private void sendInt(int n) {
-		try {
-			output.writeObject(n);
-			output.flush();
-		} catch(IOException ioException) { }
-	}
-	
+	//Function that sends a string array with elements as user and password
 	private void sendUserPass(String[] userpass) {
 		try {
 			output.writeObject(userpass);
@@ -416,7 +450,6 @@ public class Client extends JFrame {
 	private Boolean flag;
 	
 	// Server variables
-	private ServerSocket Server;
 	private Socket connection;
 	private ObjectOutputStream output;
 	private ObjectInputStream input;

@@ -7,7 +7,7 @@ import java.util.ArrayList;
 
 
 public class ServerThread implements Runnable {
-	Database db= new Database();
+	Database base;
 	public ServerThread(Socket connection, Database base) {
 		try {
 			this.connection = connection;
@@ -50,17 +50,12 @@ public class ServerThread implements Runnable {
 	}
 
 	public void recieve(String[] args) throws SQLException{
-		Person res=db.login(args);
+		Person res=base.login(args);
 		
 		try{
 			output.writeObject(res);
 		}catch(IOException ioException) { };
 	}
-	
-	// public void recieve(String[] info) throws IOException, ClassNotFoundException {
-	// 	Person p = new Person(info[0], info[1], base.getNum(), info[2], info[3], info[4]);
-	// 	base.addPerson(p); 
-	// }
 	
 	public void recieve(int n) throws IOException {
 		if(n > 0) {
@@ -75,21 +70,19 @@ public class ServerThread implements Runnable {
 		
 	}
 
+
+	//Recieve a person object to create a new account.
 	public void recieve(Person p) throws IOException{
-		db.registerAccount(p);
+		base.registerAccount(p);
 	}
 
+	//Recieve integer array to parse a transfer.
 	public void recieve(Integer[] arr){
-		db.transfer(arr[0],arr[1]);
+		base.transfer(arr[0],arr[1]);
 	}
 	
-//	public void recieve(String s) throws IOException, ClassNotFoundException {
-//		if(base.hasPerson(s)) {
-//			sendPerson(base.getPerson(s));
-//			person = base.getPerson(s);
-//		}
-//	}
-	
+
+	//Send a person object to the client
 	private void sendPerson(Person p) {
 		try {
 			output.writeObject(p);
@@ -97,6 +90,7 @@ public class ServerThread implements Runnable {
 		} catch(IOException ioException) { };
 	}
 	
+	//close down
 	private void closeDown() {
 		try {
 			connection.close();
@@ -108,8 +102,5 @@ public class ServerThread implements Runnable {
 	private Socket connection;
 	private ObjectOutputStream output;
 	private ObjectInputStream input;
-	
-	private ArrayList<Person> newAccounts;
-	private Database base;
 	private Person person;
 }

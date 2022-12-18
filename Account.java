@@ -37,7 +37,22 @@ public class Account implements java.io.Serializable {
 		return name;
 	}
 
+	public int checkIfAccExists(int accNum){
+		Database db = new Database();
+		int a = db.chkAccount(accNum);
+		return a;
+
+	}
+
 	int accNum;
 	double balance;
 	String name;
+	public double canWithdraw(double cash) {
+		if(balance >= cash) {
+			return 1;
+		}
+		else {
+			return 0;
+		}
+	}
 }

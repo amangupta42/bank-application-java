@@ -1,7 +1,10 @@
 import java.util.ArrayList;
 import java.util.Hashtable;
+import java.util.List;
 
 import javax.xml.crypto.Data;
+
+import com.mysql.cj.xdevapi.Result;
 
 import java.sql.Connection;
 import java.sql.DriverManager;
@@ -31,8 +34,8 @@ public class Database implements java.io.Serializable{
 		Person p = null;
 		try (
 
-				Statement statement = conn.createStatement();) {
-			String strSelect = "select * from Person where userName = '" + args[0] + "' LIMIT 1";
+			Statement statement = conn.createStatement();) {
+			String strSelect = "select * from Person where userName = '" + args[0] + "'";
 			System.out.println("The SQL statement is: " + strSelect + "\n"); // Echo For debugging
 			
 			ResultSet res = statement.executeQuery(strSelect);
@@ -43,6 +46,12 @@ public class Database implements java.io.Serializable{
 			res.next();
  			password = res.getString("pwd");
 			if (password.equals(args[1])) {
+				// String numAccs = "select accountNumber from Person where userName = '"+args[0]+ "'";
+				// ResultSet accs= statement.executeQuery(numAccs);
+				// List<Integer> myList = new ArrayList<Integer>();
+				// while(accs.next()){
+				// 	myList.add(accs.getInt("accountNumber"));
+				// }
 			p = new Person(res.getString("firstName"), res.getString("lastName"), res.getInt("accountNumber"),
 					res.getString("accountName"), res.getString("userName"), res.getString("pwd"));
 			}
@@ -160,10 +169,6 @@ public class Database implements java.io.Serializable{
 		return accList;
 	}
 
-	public int getSize() {
-		return alist.size();
-	}
-
 	public int getNum() {
 		return inplay.getNew();
 	}
@@ -184,7 +189,7 @@ public class Database implements java.io.Serializable{
 	}
 
 	Hashtable<String, Person> hlist = new Hashtable<String, Person>();
-	ArrayList<Person> alist = new ArrayList();
+	ArrayList<Person> alist = new ArrayList<Person>();
 	ArrayList<Integer> accList = new ArrayList<>();
 	RandomNums inplay = new RandomNums();
 	double grandTotal;
@@ -266,6 +271,28 @@ public class Database implements java.io.Serializable{
 		} catch (SQLException ex) {
 			ex.printStackTrace();
 		}
+	}
+
+	public int chkAccount(int accNum) {
+		ResultSet rs= null;
+		try (
+
+			Statement statement = conn.createStatement();) {
+			
+			
+			String strSelect = "select * from Account2 where accountNumber = "+accNum;
+			System.out.println("The SQL statement is: " + strSelect + "\n"); // Echo For debugging
+			
+			rs = statement.executeQuery(strSelect);
+			if(rs.next()){
+				return 1;
+			}
+			
+			
+		} catch (SQLException ex) {
+			ex.printStackTrace();
+		}
+		return 0;
 	}
 
 }

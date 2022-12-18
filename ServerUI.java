@@ -27,10 +27,10 @@ import javax.swing.ListSelectionModel;
 import javax.swing.SwingUtilities;
 
 
-public class Server extends JFrame {
+public class ServerUI extends JFrame {
 	
 	//set up frame details
-	public Server() {
+	public ServerUI() {
 		super("Server");
 		
 		setSize(500, 350);

@@ -1,7 +1,7 @@
-public class Main1 {
+public class StartServer {
 	public static void main(String[] args) {
 		
-		Server server = new Server(); 
+		ServerUI server = new ServerUI(); 
 		
 		server.startRunning();
 	}
